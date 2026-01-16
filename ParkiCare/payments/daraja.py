@@ -3,13 +3,13 @@ import requests
 from datetime import datetime
 
 # ✅ SAFARICOM SANDBOX DEFAULTS
-CONSUMER_KEY = "YOUR_SANDBOX_CONSUMER_KEY"
-CONSUMER_SECRET = "YOUR_SANDBOX_CONSUMER_SECRET"
+CONSUMER_KEY = "JD3uycTwiGwABxBzYhhYhRXUaninvhA7AdL9VJya1rAjP7AE"
+CONSUMER_SECRET = "bqvruNGtPBE8ZgkzZicxUs3ZFQeMtQkSybVyu9nuVAQ6LiRIGunsYo16ZFJBlsJi"
 
 SHORTCODE = "174379"
 PASSKEY = "bfb279f9aa9bdbcf158e97ddbfaf1e5..."  # sandbox passkey
 
-CALLBACK_URL = "https://webhook.site/your-test-id"  # temporary public URL
+CALLBACK_URL = "https://webhook.site/b3cb59ca-7bfe-4c1d-a3c8-06ec83f2e319"  # temporary public URL
 
 
 def get_access_token():

@@ -8,7 +8,8 @@ def pay(request):
         amount = 50
 
         Payment.objects.create(phone=phone, amount=amount)
-        stk_push(phone, amount)
+        response = stk_push(phone, amount)
+        print(response)
 
         return render(request, "pay_wait.html")
 
