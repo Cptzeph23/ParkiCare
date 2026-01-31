@@ -15,14 +15,35 @@ CALLBACK_URL = "https://webhook.site/b3cb59ca-7bfe-4c1d-a3c8-06ec83f2e319"  # te
 def get_access_token():
     url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
 
-    response = requests.get(url, auth=(CONSUMER_KEY, CONSUMER_SECRET))
+    try:
+        response = requests.get(
+            url,
+            auth=(CONSUMER_KEY, CONSUMER_SECRET),
+            timeout=30
+        )
+    except requests.exceptions.RequestException as e:
+        print("❌ NETWORK ERROR:", e)
+        return None
+
+    print("STATUS CODE:", response.status_code)
     print("TOKEN RAW RESPONSE:", response.text)
 
-    return response.json()["access_token"]
+    if response.status_code != 200:
+        return None
+
+    try:
+        return response.json().get("access_token")
+    except Exception as e:
+        print("❌ JSON PARSE ERROR:", e)
+        return None
+
 
 
 def stk_push(phone, amount):
     token = get_access_token()
+
+    if not token:
+        return {"error": "Failed to obtain access token"}
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     password = base64.b64encode(
@@ -49,8 +70,13 @@ def stk_push(phone, amount):
     }
 
     url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+
     response = requests.post(url, json=payload, headers=headers)
 
+    print("STK STATUS:", response.status_code)
     print("STK RAW RESPONSE:", response.text)
 
-    return response.text
+    return {
+        "status": response.status_code,
+        "response": response.text
+    }

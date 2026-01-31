@@ -6,7 +6,7 @@ import joblib
 import numpy as np
 from django.shortcuts import render
 
-MODEL_PATH = "screening/ml/parki_xgb_model.pkl"
+MODEL_PATH = "screening/ML/parki_xgb_model.pkl"
 
 bundle = joblib.load(MODEL_PATH)
 scaler = bundle["scaler"]
@@ -36,5 +36,7 @@ def predict(request):
         })
 
     return render(request, "predict.html", {"features": features})
+
+
 
 
