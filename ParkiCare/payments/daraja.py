@@ -3,13 +3,13 @@ import requests
 from datetime import datetime
 
 # ✅ SAFARICOM SANDBOX DEFAULTS
-CONSUMER_KEY = "JD3uycTwiGwABxBzYhhYhRXUaninvhA7AdL9VJya1rAjP7AE"
-CONSUMER_SECRET = "bqvruNGtPBE8ZgkzZicxUs3ZFQeMtQkSybVyu9nuVAQ6LiRIGunsYo16ZFJBlsJi"
+CONSUMER_KEY = "xbN25D14dp01jUR5qr4rdr0BWjme0szyCKwmcQe44XzOjaFn"
+CONSUMER_SECRET = "H8wWABpsZH66kjgCCvrTXV6Ue1UPA3TbWLDlwDcE92QdxnGvCQFk8KXNyjCdcYs2"
 
 SHORTCODE = "174379"
 PASSKEY = "bfb279f9aa9bdbcf158e97ddbfaf1e5..."  # sandbox passkey
 
-CALLBACK_URL = "https://webhook.site/b3cb59ca-7bfe-4c1d-a3c8-06ec83f2e319"  # temporary public URL
+CALLBACK_URL = "https://webhook.site/your-unique-id"
 
 
 def get_access_token():
@@ -41,9 +41,8 @@ def get_access_token():
 
 def stk_push(phone, amount):
     token = get_access_token()
-
     if not token:
-        return {"error": "Failed to obtain access token"}
+        return None
 
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     password = base64.b64encode(
@@ -61,7 +60,7 @@ def stk_push(phone, amount):
         "PhoneNumber": phone,
         "CallBackURL": CALLBACK_URL,
         "AccountReference": "ParkiCare",
-        "TransactionDesc": "Parkinson Screening"
+        "TransactionDesc": "Parkinson Screening Payment"
     }
 
     headers = {
@@ -70,13 +69,12 @@ def stk_push(phone, amount):
     }
 
     url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-
     response = requests.post(url, json=payload, headers=headers)
 
     print("STK STATUS:", response.status_code)
-    print("STK RAW RESPONSE:", response.text)
+    print("STK RESPONSE:", response.text)
 
-    return {
-        "status": response.status_code,
-        "response": response.text
-    }
+    try:
+        return response.json()
+    except:
+        return None
