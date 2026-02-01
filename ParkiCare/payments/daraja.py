@@ -7,7 +7,7 @@ CONSUMER_KEY = "xbN25D14dp01jUR5qr4rdr0BWjme0szyCKwmcQe44XzOjaFn"
 CONSUMER_SECRET = "H8wWABpsZH66kjgCCvrTXV6Ue1UPA3TbWLDlwDcE92QdxnGvCQFk8KXNyjCdcYs2"
 
 SHORTCODE = "174379"
-PASSKEY = "bfb279f9aa9bdbcf158e97ddbfaf1e5..."  # sandbox passkey
+PASSKEY = "bfb279f9aa9bdbcf158e97ddbfaf1e5a"
 
 CALLBACK_URL = "https://webhook.site/your-unique-id"
 
