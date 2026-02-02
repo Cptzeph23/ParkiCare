@@ -20,7 +20,7 @@ def predict(request):
             raw_value = request.POST.get(feature)
 
             if raw_value is None or raw_value == "":
-                return render(request, "screening/predict.html", {
+                return render(request, "predict.html", {
                     "features": features,
                     "error": "Please fill in all fields before submitting."
                 })
@@ -33,18 +33,24 @@ def predict(request):
         prediction = model.predict(data_scaled)[0]
         result = "Parkinson’s Detected" if prediction == 1 else "No Parkinson’s Detected"
 
+        print("✅ PREDICTION RESULT:", result)
+
         phone = request.session.get("user_phone")
+        print("📞 SESSION PHONE:", phone)
+
         if phone:
+            print("🚀 CALLING GAVA SEND_SMS")
             send_sms(
                 phone,
                 f"ParkiCare Screening Result:\n{result}\nAI-based preliminary screening."
             )
+        else:
+            print("❌ NO PHONE NUMBER IN SESSION — SMS NOT SENT")
 
         return render(request, "result.html", {
             "result": result
         })
 
-    # ✅ GET REQUEST — PASS FEATURES
     return render(request, "predict.html", {
         "features": features
     })

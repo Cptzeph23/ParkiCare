@@ -2,11 +2,15 @@ import requests
 
 GAVA_DEMO_MODE = True  
 def send_sms(phone, message):
+    """
+    Demo SMS sender for ParkiCare project.
+    Real Gava Connect credentials required for live SMS.
+    """
     if GAVA_DEMO_MODE:
-        print("📨 [DEMO SMS]")
-        print("📞 TO:", phone)
+        print("📨 [GAVA DEMO SMS]")
+        print("📞 PHONE:", phone)
         print("💬 MESSAGE:", message)
-        print("✅ SMS MARKED AS SENT (DEMO MODE)")
+        print("✅ SMS FLOW CONFIRMED (NO REAL SMS SENT)")
         return {
             "status": "demo",
             "phone": phone,
