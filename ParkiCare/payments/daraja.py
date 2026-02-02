@@ -2,41 +2,20 @@ import base64
 import requests
 from datetime import datetime
 
-# ✅ SAFARICOM SANDBOX DEFAULTS
 CONSUMER_KEY = "xbN25D14dp01jUR5qr4rdr0BWjme0szyCKwmcQe44XzOjaFn"
 CONSUMER_SECRET = "H8wWABpsZH66kjgCCvrTXV6Ue1UPA3TbWLDlwDcE92QdxnGvCQFk8KXNyjCdcYs2"
 
 SHORTCODE = "174379"
 PASSKEY = "bfb279f9aa9bdbcf158e97ddbfaf1e5a"
 
-CALLBACK_URL = "https://webhook.site/your-unique-id"
+CALLBACK_URL = "https://webhook.site/cf9630eb-85df-4dd0-8085-7cd9a5aa834c"
 
 
 def get_access_token():
     url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
-
-    try:
-        response = requests.get(
-            url,
-            auth=(CONSUMER_KEY, CONSUMER_SECRET),
-            timeout=30
-        )
-    except requests.exceptions.RequestException as e:
-        print("❌ NETWORK ERROR:", e)
-        return None
-
-    print("STATUS CODE:", response.status_code)
-    print("TOKEN RAW RESPONSE:", response.text)
-
-    if response.status_code != 200:
-        return None
-
-    try:
-        return response.json().get("access_token")
-    except Exception as e:
-        print("❌ JSON PARSE ERROR:", e)
-        return None
-
+    response = requests.get(url, auth=(CONSUMER_KEY, CONSUMER_SECRET))
+    print("TOKEN:", response.text)
+    return response.json().get("access_token")
 
 
 def stk_push(phone, amount):
@@ -68,13 +47,11 @@ def stk_push(phone, amount):
         "Content-Type": "application/json"
     }
 
-    url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-    response = requests.post(url, json=payload, headers=headers)
+    response = requests.post(
+        "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+        json=payload,
+        headers=headers
+    )
 
-    print("STK STATUS:", response.status_code)
     print("STK RESPONSE:", response.text)
-
-    try:
-        return response.json()
-    except:
-        return None
+    return response.json()

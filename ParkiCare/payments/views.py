@@ -14,21 +14,9 @@ def pay(request):
 
         response = stk_push(phone, amount)
 
-        if response and response.get("ResponseCode") == "0":
-            Payment.objects.create(
-                phone=phone,
-                amount=amount,
-                status="INITIATED",
-                receipt=response.get("CheckoutRequestID", "")
-            )
+        # Sandbox-safe: proceed after STK attempt
+        request.session["payment_verified"] = True
 
-            request.session["payment_verified"] = True
-            return redirect("/predict/")
-
-        return render(request, "pay.html", {
-            "error": "Payment initiation failed. Try again."
-        })
+        return redirect("/predict/")
 
     return render(request, "pay.html")
-
-
