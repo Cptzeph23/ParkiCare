@@ -111,3 +111,23 @@ STATIC_URL = 'static/'
 
 DEMO_PAYMENT_MODE = True
 
+# =========================
+# GavaConnect SMS Settings
+# =========================
+GAVA_API_URL = "https://api.gavaconnect.co.ke/api/v1/sms/send"
+GAVA_API_KEY = "YOUR_GAVA_API_KEY"
+GAVA_SENDER_ID = "ParkiCare"
+
+
+
+
+
+
+
+
+
+
+
+
+
+

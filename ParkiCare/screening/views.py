@@ -1,42 +1,53 @@
 from django.shortcuts import render
-
-# Create your views here.
-
-import joblib
 import numpy as np
-from django.shortcuts import render
+import joblib
+from notifications.gava import send_sms
 
-MODEL_PATH = "screening/ML/parki_xgb_model.pkl"
+# Load model once (this part is OK at top-level)
+model_bundle = joblib.load("screening/ML/parki_xgb_model.pkl")
+model = model_bundle["model"]
+scaler = model_bundle["scaler"]
+features = model_bundle["features"]
 
-bundle = joblib.load(MODEL_PATH)
-scaler = bundle["scaler"]
-model = bundle["model"]
-features = bundle["features"]
-
-def home(request):
-    return render(request, "home.html")
 
 def predict(request):
     if request.method == "POST":
-        values = []
+        # 1️⃣ Collect input data
+        input_data = []
 
         for feature in features:
             value = float(request.POST.get(feature))
-            values.append(value)
+            input_data.append(value)
 
-        data = np.array(values).reshape(1, -1)
-        data_scaled = scaler.transform(data)
+        input_array = np.array(input_data).reshape(1, -1)
+
+        # 2️⃣ Scale data
+        data_scaled = scaler.transform(input_array)
+
+        # 3️⃣ Make prediction
         prediction = model.predict(data_scaled)[0]
-
         result = "Parkinson’s Detected" if prediction == 1 else "No Parkinson’s Detected"
 
-        return render(request, "result.html", {
-            "result": result,
-            "values": zip(features, values)
+        # 🔔 DEBUG LOGS
+        print("✅ PREDICTION COMPLETE:", result)
+        print("📦 SESSION PHONE:", request.session.get("user_phone"))
+
+        # 4️⃣ Send SMS
+        phone = request.session.get("user_phone")
+        if phone:
+            message = (
+                f"ParkiCare Screening Result:\n"
+                f"{result}\n"
+                f"This is an AI-based preliminary screening."
+            )
+            send_sms(phone, message)
+        else:
+            print("❌ NO PHONE NUMBER FOUND — SMS SKIPPED")
+
+        # 5️⃣ Return result
+        return render(request, "screening/result.html", {
+            "result": result
         })
 
-    return render(request, "predict.html", {"features": features})
-
-
-
-
+    # GET request
+    return render(request, "screening/predict.html")
