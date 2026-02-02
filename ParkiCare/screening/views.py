@@ -9,45 +9,42 @@ model = model_bundle["model"]
 scaler = model_bundle["scaler"]
 features = model_bundle["features"]
 
+def home(request):
+    return render(request, "home.html")
 
 def predict(request):
     if request.method == "POST":
-        # 1️⃣ Collect input data
         input_data = []
 
         for feature in features:
-            value = float(request.POST.get(feature))
-            input_data.append(value)
+            raw_value = request.POST.get(feature)
+
+            if raw_value is None or raw_value == "":
+                return render(request, "screening/predict.html", {
+                    "features": features,
+                    "error": "Please fill in all fields before submitting."
+                })
+
+            input_data.append(float(raw_value))
 
         input_array = np.array(input_data).reshape(1, -1)
-
-        # 2️⃣ Scale data
         data_scaled = scaler.transform(input_array)
 
-        # 3️⃣ Make prediction
         prediction = model.predict(data_scaled)[0]
         result = "Parkinson’s Detected" if prediction == 1 else "No Parkinson’s Detected"
 
-        # 🔔 DEBUG LOGS
-        print("✅ PREDICTION COMPLETE:", result)
-        print("📦 SESSION PHONE:", request.session.get("user_phone"))
-
-        # 4️⃣ Send SMS
         phone = request.session.get("user_phone")
         if phone:
-            message = (
-                f"ParkiCare Screening Result:\n"
-                f"{result}\n"
-                f"This is an AI-based preliminary screening."
+            send_sms(
+                phone,
+                f"ParkiCare Screening Result:\n{result}\nAI-based preliminary screening."
             )
-            send_sms(phone, message)
-        else:
-            print("❌ NO PHONE NUMBER FOUND — SMS SKIPPED")
 
-        # 5️⃣ Return result
-        return render(request, "screening/result.html", {
+        return render(request, "result.html", {
             "result": result
         })
 
-    # GET request
-    return render(request, "screening/predict.html")
+    # ✅ GET REQUEST — PASS FEATURES
+    return render(request, "predict.html", {
+        "features": features
+    })
