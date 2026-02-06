@@ -21,8 +21,15 @@ def get_access_token():
 def stk_push(phone, amount):
     token = get_access_token()
     if not token:
-        return None
+        print("❌ ACCESS TOKEN FAILED")
+        return {"errorCode": "TOKEN_FAIL", "errorMessage": "Could not generate access token"}
 
+    # Ensure phone format 254...
+    if phone.startswith("0"):
+        phone = "254" + phone[1:]
+    elif phone.startswith("+254"):
+        phone = phone[1:]
+    
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     password = base64.b64encode(
         (SHORTCODE + PASSKEY + timestamp).encode()
@@ -47,11 +54,14 @@ def stk_push(phone, amount):
         "Content-Type": "application/json"
     }
 
-    response = requests.post(
-        "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
-        json=payload,
-        headers=headers
-    )
-
-    print("STK RESPONSE:", response.text)
-    return response.json()
+    try:
+        response = requests.post(
+            "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+            json=payload,
+            headers=headers
+        )
+        print("STK RESPONSE:", response.text)
+        return response.json()
+    except Exception as e:
+        print("❌ STK PUSH EXCEPTION:", e)
+        return {"errorCode": "EXCEPTION", "errorMessage": str(e)}
