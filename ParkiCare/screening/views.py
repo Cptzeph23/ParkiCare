@@ -54,3 +54,30 @@ def predict(request):
     return render(request, "predict.html", {
         "features": features
     })
+
+    # Human-readable explanations for the ML features
+feature_guide = {
+    "MDVP:Fo(Hz)": ("Fundamental Frequency", "Average vocal frequency", "Normal: 85–255 Hz"),
+    "MDVP:Fhi(Hz)": ("Max Frequency", "Highest vocal frequency", "Normal: < 300 Hz"),
+    "MDVP:Flo(Hz)": ("Min Frequency", "Lowest vocal frequency", "Normal: > 70 Hz"),
+    "MDVP:Jitter(%)": ("Jitter Percent", "Frequency variation in voice", "Normal: < 0.01"),
+    "MDVP:Jitter(Abs)": ("Absolute Jitter", "Cycle-to-cycle variation", "Normal: very low"),
+    "MDVP:RAP": ("Relative Average Perturbation", "Short-term voice instability", "Normal: < 0.02"),
+    "MDVP:PPQ": ("Pitch Perturbation Quotient", "Pitch variation", "Normal: small"),
+    "Jitter:DDP": ("Jitter DDP", "Derivative of RAP", "Normal: low"),
+    "MDVP:Shimmer": ("Shimmer", "Amplitude variation", "Normal: < 0.03"),
+    "MDVP:Shimmer(dB)": ("Shimmer dB", "Amplitude variation (decibels)", "Normal: low"),
+    "Shimmer:APQ3": ("Amplitude Perturbation Q3", "Voice amplitude instability", "Normal: low"),
+    "Shimmer:APQ5": ("Amplitude Perturbation Q5", "Amplitude variation window", "Normal: low"),
+    "MDVP:APQ": ("Amplitude Perturbation Quotient", "Amplitude irregularities", "Normal: low"),
+    "Shimmer:DDA": ("DDA", "Average shimmer difference", "Normal: low"),
+    "NHR": ("Noise-to-Harmonic Ratio", "Noise in voice signal", "Normal: < 0.02"),
+    "HNR": ("Harmonic-to-Noise Ratio", "Voice clarity", "Normal: high (>20)"),
+    "RPDE": ("Recurrence Period Density Entropy", "Signal complexity", "Normal: lower"),
+    "DFA": ("Detrended Fluctuation Analysis", "Signal self-similarity", "Normal: moderate"),
+    "spread1": ("Nonlinear Spread 1", "Frequency variation", "Normal: small"),
+    "spread2": ("Nonlinear Spread 2", "Signal dispersion", "Normal: small"),
+    "D2": ("Correlation Dimension", "Vocal dynamic complexity", "Normal: stable"),
+    "PPE": ("Pitch Period Entropy", "Pitch predictability", "Normal: low"),
+}
+
