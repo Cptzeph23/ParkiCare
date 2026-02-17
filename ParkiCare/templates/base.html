@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ParkiCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
@@ -20,5 +21,18 @@
             <footer class="hc-foot">Designed for accessible screening</footer>
         </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-qI1Yt8v0h2p8eQh8sCtdpQf8kPq1G1vGQIOtIu9UQZ0rZkQ5uNfK1Qw7UuHkDk9a" crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener('submit', function(e){
+        const btn = e.target.querySelector('button[type="submit"], .hc-btn');
+        if(btn){
+          const original = btn.textContent;
+          btn.dataset.original = original;
+          btn.disabled = true;
+          btn.classList.add('disabled');
+          btn.textContent = 'Processing...';
+        }
+      });
+    </script>
 </body>
 </html>
