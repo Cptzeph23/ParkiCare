@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:#E3F4F1;color:#1F3A3D}
+.hc-center{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
+.hc-card{width:100%;max-width:760px;background:#fff;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.08);padding:32px}
+.hc-title{margin:0 0 16px;font-weight:700;font-size:28px;color:#2F8F83;text-align:center}
+.hc-sub{margin:0 0 24px;text-align:center;color:#375a5e}
+.hc-actions{display:flex;gap:12px;justify-content:center;align-items:center;margin-top:24px}
+.hc-btn{appearance:none;border:none;border-radius:10px;padding:12px 20px;background:#2F8F83;color:#fff;font-weight:600;letter-spacing:.2px;cursor:pointer;transition:transform .08s ease,box-shadow .2s ease,background .2s ease}
+.hc-btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(47,143,131,.25);background:#28877b}
+.hc-btn.alt{background:#5DB1A7}
+.hc-btn.alt:hover{background:#54a79d}
+.hc-link{color:#2F8F83;text-decoration:none;font-weight:600}
+.hc-link:hover{text-decoration:underline}
+.hc-form{display:grid;gap:16px}
+.hc-field{display:grid;gap:8px}
+.hc-label{font-weight:600;color:#1F3A3D}
+.hc-input{width:100%;padding:12px 14px;border:1px solid #cfe3df;border-radius:10px;background:#f9fbfb;color:#1F3A3D;outline:none;transition:border .15s ease,box-shadow .15s ease}
+.hc-input::placeholder{color:#7aa5a0}
+.hc-input:focus{border-color:#5DB1A7;box-shadow:0 0 0 3px rgba(93,177,167,.25)}
+.hc-number{appearance:textfield}
+.hc-error{background:#fde7e6;color:#9d2a23;border:1px solid #f3c4c1;border-radius:10px;padding:10px 12px}
+.hc-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.hc-list li{padding:10px 12px;border:1px solid #e8f2f0;border-radius:10px;background:#f6fbfa}
+.hc-header{display:flex;justify-content:center;align-items:center;margin-bottom:16px}
+.hc-brand{display:flex;gap:10px;align-items:center}
+.hc-logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#5DB1A7 0%,#2F8F83 100%);box-shadow:0 6px 12px rgba(47,143,131,.25)}
+.hc-brand h1{font-size:22px;margin:0;color:#2F8F83}
+.hc-foot{margin-top:20px;text-align:center;color:#6b8f8b;font-size:13px}
+.hc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hc-full{grid-column:1/-1}

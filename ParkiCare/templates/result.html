@@ -1,27 +1,14 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>result</title>
-</head>
-<body>
-
-    <h2>Prediction Result</h2>
-
-        <p><strong>{{ result }}</strong></p>
-
-            <h4>Entered Values:</h4>
-    <ul>
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="hc-title">Prediction Result</h2>
+    <p class="hc-sub"><strong>{{ result }}</strong></p>
+    <h3 class="hc-title">Entered Values</h3>
+    <ul class="hc-list">
         {% for name, value in values %}
           <li>{{ name }} : {{ value }}</li>
         {% endfor %}
     </ul>
-
-<a href="/predict/">Run Another Test</a>
-
-
-</body>
-</html>
+    <div class="hc-actions">
+        <a class="hc-btn alt" href="/predict/">Run Another Test</a>
+    </div>
+{% endblock %}

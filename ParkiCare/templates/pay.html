@@ -1,22 +1,14 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Payment</title>
-</head>
-<body>
-
-    <h2>Pay KES 50 to Continue</h2>
-
-        <form method="POST">
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="hc-title">Pay KES 50 to Continue</h2>
+    <form class="hc-form" method="POST">
         {% csrf_token %}
-        <input type="text" name="phone" placeholder="2547XXXXXXXX" required>
-        <button type="submit">Pay</button>
-        </form>
-
-
-</body>
-</html>
+        <div class="hc-field">
+            <label class="hc-label">Phone Number</label>
+            <input class="hc-input" type="text" name="phone" placeholder="2547XXXXXXXX" required>
+        </div>
+        <div class="hc-actions">
+            <button class="hc-btn" type="submit">Pay</button>
+        </div>
+    </form>
+{% endblock %}

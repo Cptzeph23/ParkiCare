@@ -1,0 +1,24 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ParkiCare</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <main class="hc-center">
+        <section class="hc-card">
+            <header class="hc-header">
+                <div class="hc-brand">
+                    <div class="hc-logo"></div>
+                    <h1>ParkiCare</h1>
+                </div>
+            </header>
+            {% block content %}{% endblock %}
+            <footer class="hc-foot">Designed for accessible screening</footer>
+        </section>
+    </main>
+</body>
+</html>

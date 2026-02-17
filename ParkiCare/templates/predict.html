@@ -1,29 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>ParkiCare Screening</title>
-</head>
-<body>
-    <h2>Parkinson’s Disease Screening</h2>
-
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="hc-title">Parkinson’s Disease Screening</h2>
     {% if error %}
-        <p style="color:red;">{{ error }}</p>
+        <div class="hc-error">{{ error }}</div>
     {% endif %}
-
-    <form method="post">
+    <form class="hc-form" method="post">
         {% csrf_token %}
-
+        <div class="hc-grid hc-full">
         {% for feature in features %}
-            <label>{{ feature }}</label><br>
-            <input
-                type="number"
-                step="any"
-                name="{{ feature }}"
-                required
-            ><br><br>
+            <div class="hc-field">
+                <label class="hc-label">{{ feature }}</label>
+                <input class="hc-input hc-number" type="number" step="any" name="{{ feature }}" placeholder="Enter value" required>
+            </div>
         {% endfor %}
-
-        <button type="submit">Predict</button>
+        </div>
+        <div class="hc-actions">
+            <button class="hc-btn" type="submit">Predict</button>
+        </div>
     </form>
-</body>
-</html>
+{% endblock %}

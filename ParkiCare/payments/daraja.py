@@ -1,5 +1,6 @@
 import base64
 import requests
+import certifi
 from datetime import datetime
 
 CONSUMER_KEY = "xbN25D14dp01jUR5qr4rdr0BWjme0szyCKwmcQe44XzOjaFn"
@@ -13,9 +14,17 @@ CALLBACK_URL = "https://webhook.site/cf9630eb-85df-4dd0-8085-7cd9a5aa834c"
 
 def get_access_token():
     url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
-    response = requests.get(url, auth=(CONSUMER_KEY, CONSUMER_SECRET))
-    print("TOKEN:", response.text)
-    return response.json().get("access_token")
+    try:
+        response = requests.get(
+            url,
+            auth=(CONSUMER_KEY, CONSUMER_SECRET),
+            timeout=10,
+            verify=certifi.where(),
+        )
+        return response.json().get("access_token")
+    except Exception as e:
+        print("❌ ACCESS TOKEN EXCEPTION:", e)
+        return None
 
 
 def stk_push(phone, amount):
@@ -58,7 +67,9 @@ def stk_push(phone, amount):
         response = requests.post(
             "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
             json=payload,
-            headers=headers
+            headers=headers,
+            timeout=10,
+            verify=certifi.where(),
         )
         print("STK RESPONSE:", response.text)
         return response.json()
