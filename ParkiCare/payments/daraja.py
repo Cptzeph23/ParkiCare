@@ -2,6 +2,7 @@ import base64
 import requests
 import certifi
 from datetime import datetime
+from django.conf import settings
 
 CONSUMER_KEY = "xbN25D14dp01jUR5qr4rdr0BWjme0szyCKwmcQe44XzOjaFn"
 CONSUMER_SECRET = "H8wWABpsZH66kjgCCvrTXV6Ue1UPA3TbWLDlwDcE92QdxnGvCQFk8KXNyjCdcYs2"
@@ -12,8 +13,11 @@ PASSKEY = "bfb279f9aa9bdbcf158e97ddbfaf1e5a"
 CALLBACK_URL = "https://webhook.site/cf9630eb-85df-4dd0-8085-7cd9a5aa834c"
 
 
+def _host():
+    return "api.safaricom.co.ke" if getattr(settings, "DARAJA_LIVE_STK", False) else "sandbox.safaricom.co.ke"
+
 def get_access_token():
-    url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
+    url = f"https://{_host()}/oauth/v1/generate?grant_type=client_credentials"
     try:
         response = requests.get(
             url,
@@ -76,3 +80,47 @@ def stk_push(phone, amount):
     except Exception as e:
         print("❌ STK PUSH EXCEPTION:", e)
         return {"errorCode": "EXCEPTION", "errorMessage": str(e)}
+
+def demo_stk_push(phone=None, amount=50):
+    token = get_access_token()
+    if not token:
+        print("❌ ACCESS TOKEN FAILED (DEMO)")
+        return {"errorCode": "TOKEN_FAIL", "errorMessage": "Demo: Could not generate access token"}
+    # Use Safaricom sandbox default testing number if none provided
+    phone = phone or "254708374149"
+    if phone.startswith("0"):
+        phone = "254" + phone[1:]
+    elif phone.startswith("+254"):
+        phone = phone[1:]
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    password = base64.b64encode((SHORTCODE + PASSKEY + timestamp).encode()).decode()
+    payload = {
+        "BusinessShortCode": SHORTCODE,
+        "Password": password,
+        "Timestamp": timestamp,
+        "TransactionType": "CustomerPayBillOnline",
+        "Amount": amount,
+        "PartyA": phone,
+        "PartyB": SHORTCODE,
+        "PhoneNumber": phone,
+        "CallBackURL": CALLBACK_URL,
+        "AccountReference": "ParkiCare DEMO",
+        "TransactionDesc": "Sandbox Demo STK Push"
+    }
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+    try:
+        response = requests.post(
+            f"https://{_host()}/mpesa/stkpush/v1/processrequest",
+            json=payload,
+            headers=headers,
+            timeout=10,
+            verify=certifi.where(),
+        )
+        print("STK DEMO RESPONSE:", response.text)
+        return response.json()
+    except Exception as e:
+        print("⚠️ STK DEMO EXCEPTION:", e)
+        return {"errorCode": "DEMO_EXCEPTION", "errorMessage": str(e)}

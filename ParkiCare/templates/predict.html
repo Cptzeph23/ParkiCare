@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2 class="hc-title">Parkinson’s Disease Screening</h2>
-    {% if error %}
-        <div class="hc-error">{{ error }}</div>
-    {% endif %}
+<h2 class="hc-title">Parkinson’s Disease Screening</h2>
+{% if error %}
+    <div class="hc-error">{{ error }}</div>
+{% endif %}
+<div class="hc-split hc-full">
     <form class="hc-form" method="post">
         {% csrf_token %}
         <div class="hc-grid hc-full">
@@ -18,4 +19,32 @@
             <button class="hc-btn" type="submit">Predict</button>
         </div>
     </form>
+
+    <div class="hc-card" style="padding:20px;">
+        <h3 class="hc-title" style="margin-bottom:8px;">Clinical Feature Guide</h3>
+        <p class="hc-sub">Descriptions and indicative normal ranges for voice features.</p>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Meaning</th>
+                        <th>Details</th>
+                        <th>Typical Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in guide_list %}
+                        <tr>
+                            <td><strong>{{ item.0 }}</strong></td>
+                            <td>{{ item.1 }}</td>
+                            <td>{{ item.2 }}</td>
+                            <td><em>{{ item.3 }}</em></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
