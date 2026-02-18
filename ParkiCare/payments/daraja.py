@@ -27,14 +27,14 @@ def get_access_token():
         )
         return response.json().get("access_token")
     except Exception as e:
-        print("❌ ACCESS TOKEN EXCEPTION:", e)
+        print(" ACCESS TOKEN EXCEPTION:", e)
         return None
 
 
 def stk_push(phone, amount):
     token = get_access_token()
     if not token:
-        print("❌ ACCESS TOKEN FAILED")
+        print(" ACCESS TOKEN FAILED")
         return {"errorCode": "TOKEN_FAIL", "errorMessage": "Could not generate access token"}
 
     # Ensure phone format 254...
@@ -78,13 +78,13 @@ def stk_push(phone, amount):
         print("STK RESPONSE:", response.text)
         return response.json()
     except Exception as e:
-        print("❌ STK PUSH EXCEPTION:", e)
+        print(" STK PUSH EXCEPTION:", e)
         return {"errorCode": "EXCEPTION", "errorMessage": str(e)}
 
 def demo_stk_push(phone=None, amount=50):
     token = get_access_token()
     if not token:
-        print("❌ ACCESS TOKEN FAILED (DEMO)")
+        print(" ACCESS TOKEN FAILED (DEMO)")
         return {"errorCode": "TOKEN_FAIL", "errorMessage": "Demo: Could not generate access token"}
     # Use Safaricom sandbox default testing number if none provided
     phone = phone or "254708374149"
@@ -122,5 +122,5 @@ def demo_stk_push(phone=None, amount=50):
         print("STK DEMO RESPONSE:", response.text)
         return response.json()
     except Exception as e:
-        print("⚠️ STK DEMO EXCEPTION:", e)
+        print(" STK DEMO EXCEPTION:", e)
         return {"errorCode": "DEMO_EXCEPTION", "errorMessage": str(e)}

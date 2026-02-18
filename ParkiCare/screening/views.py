@@ -66,19 +66,19 @@ def predict(request):
         prediction = model.predict(data_scaled)[0]
         result = "Parkinson’s Detected" if prediction == 1 else "No Parkinson’s Detected"
 
-        print("✅ PREDICTION RESULT:", result)
+        print(" PREDICTION RESULT:", result)
 
         phone = request.session.get("user_phone")
-        print("📞 SESSION PHONE:", phone)
+        print(" SESSION PHONE:", phone)
 
         if phone:
-            print("🚀 CALLING GAVA SEND_SMS")
+            print(" CALLING GAVA SEND_SMS")
             send_sms(
                 phone,
                 f"ParkiCare Screening Result:\n{result}\nAI-based preliminary screening."
             )
         else:
-            print("❌ NO PHONE NUMBER IN SESSION — SMS NOT SENT")
+            print(" NO PHONE NUMBER IN SESSION — SMS NOT SENT")
 
         return render(request, "result.html", {
             "result": result
