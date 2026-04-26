@@ -109,9 +109,17 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-DARAJA_LIVE_STK = True
 
+# Daraja STK settings
+# Keep LIVE as False while using sandbox credentials/test MSISDN.
+DARAJA_LIVE_STK = False
 DEMO_PAYMENT_MODE = True
+DARAJA_CONSUMER_KEY = "xbN25D14dp01jUR5qr4rdr0BWjme0szyCKwmcQe44XzOjaFn"
+DARAJA_CONSUMER_SECRET = "H8wWABpsZH66kjgCCvrTXV6Ue1UPA3TbWLDlwDcE92QdxnGvCQFk8KXNyjCdcYs2"
+DARAJA_SHORTCODE = "174379"
+DARAJA_PASSKEY = "bfb279f9aa9bdbcf158e97ddbfaf1e5a"
+DARAJA_CALLBACK_URL = "https://webhook.site/cf9630eb-85df-4dd0-8085-7cd9a5aa834c"
+DARAJA_SANDBOX_ALLOWED_MSISDNS = ["254708374149"]
 
 # =========================
 # GavaConnect SMS Settings

@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
     <h2 class="hc-title">Pay KES 50 to Continue</h2>
+    {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+    {% endif %}
     <form class="hc-form" method="POST">
         {% csrf_token %}
         <div class="hc-field">
             <label class="hc-label">Phone Number</label>
-            <input class="hc-input" type="text" name="phone" placeholder="2547XXXXXXXX" required>
+            <input class="hc-input" type="text" name="phone" placeholder="2547XXXXXXXX" value="{{ phone|default:'' }}" required>
         </div>
         <div class="hc-actions">
             <button class="hc-btn" type="submit">Pay</button>
